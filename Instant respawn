@@ -12,14 +12,14 @@ local hiddenUI = Instance.new("Folder", CoreGui)
 hiddenUI.Name = "HiddenUI"
 
 local gui = Instance.new("ScreenGui", hiddenUI)
-gui.Name = "IceHubGui"
+gui.Name = "CentHubGui"
 gui.ResetOnSpawn = false
 gui.IgnoreGuiInset = true
 gui.DisplayOrder = 999
 
 -- // 2 (Main Frame) //
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.fromOffset(120, 180)
+frame.Size = UDim2.fromOffset(180, 160)
 frame.Position = UDim2.new(0.5, -100, 0.75, -90)
 frame.BackgroundColor3 = Color3.new(0, 0, 0)
 frame.BackgroundTransparency = 0.6
@@ -40,7 +40,7 @@ title.TextXAlignment = Enum.TextXAlignment.Left
 
 -- // 4 (Insta Respawn Button) //
 local respawnBtn = Instance.new("TextButton", frame)
-respawnBtn.Size = UDim2.fromOffset(100, 40)
+respawnBtn.Size = UDim2.fromOffset(160, 40)
 respawnBtn.Position = UDim2.new(0.5, -90, 0, 40)
 respawnBtn.BackgroundColor3 = Color3.new(0, 0, 0)
 respawnBtn.BackgroundTransparency = 0.5
