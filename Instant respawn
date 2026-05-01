@@ -1,3 +1,5 @@
+-- // ICE HUB (Insta Respawn) â€” Reconstructed from trace + source logic //
+
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
@@ -12,14 +14,14 @@ local hiddenUI = Instance.new("Folder", CoreGui)
 hiddenUI.Name = "HiddenUI"
 
 local gui = Instance.new("ScreenGui", hiddenUI)
-gui.Name = "CentHubGui"
+gui.Name = "IceHubGui"
 gui.ResetOnSpawn = false
 gui.IgnoreGuiInset = true
 gui.DisplayOrder = 999
 
 -- // 2 (Main Frame) //
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.fromOffset(180, 160)
+frame.Size = UDim2.fromOffset(200, 180)
 frame.Position = UDim2.new(0.5, -100, 0.75, -90)
 frame.BackgroundColor3 = Color3.new(0, 0, 0)
 frame.BackgroundTransparency = 0.6
@@ -32,7 +34,7 @@ local title = Instance.new("TextLabel", frame)
 title.Size = UDim2.new(1, -40, 0, 26)
 title.Position = UDim2.fromOffset(12, 5)
 title.BackgroundTransparency = 1
-title.Text = "Cent Hub"
+title.Text = "CENT HUB"
 title.Font = Enum.Font.GothamBold
 title.TextSize = 18
 title.TextColor3 = Color3.new(1, 1, 1)
@@ -40,8 +42,8 @@ title.TextXAlignment = Enum.TextXAlignment.Left
 
 -- // 4 (Insta Respawn Button) //
 local respawnBtn = Instance.new("TextButton", frame)
-respawnBtn.Size = UDim2.fromOffset(160, 30)
-respawnBtn.Position = UDim2.new(0.5, -50, 0, 40)
+respawnBtn.Size = UDim2.fromOffset(180, 40)
+respawnBtn.Position = UDim2.new(0.5, -90, 0, 40)
 respawnBtn.BackgroundColor3 = Color3.new(0, 0, 0)
 respawnBtn.BackgroundTransparency = 0.5
 respawnBtn.TextColor3 = Color3.new(1, 1, 1)
@@ -51,6 +53,34 @@ respawnBtn.TextSize = 14
 respawnBtn.BorderSizePixel = 0
 respawnBtn.AutoButtonColor = false
 Instance.new("UICorner", respawnBtn).CornerRadius = UDim.new(0, 7)
+
+-- // 5 (Keybind Button) //
+local keybindBtn = Instance.new("TextButton", frame)
+keybindBtn.Size = UDim2.fromOffset(180, 28)
+keybindBtn.Position = UDim2.new(0.5, -90, 0, 88)
+keybindBtn.BackgroundColor3 = Color3.new(0, 0, 0)
+keybindBtn.BackgroundTransparency = 0.5
+keybindBtn.TextColor3 = Color3.new(1, 1, 1)
+keybindBtn.Text = "KeyBind: R"
+keybindBtn.Font = Enum.Font.GothamMedium
+keybindBtn.TextSize = 12
+keybindBtn.BorderSizePixel = 0
+keybindBtn.AutoButtonColor = false
+Instance.new("UICorner", keybindBtn).CornerRadius = UDim.new(0, 5)
+
+-- // 6 (Reset on Balloon Button) //
+local balloonBtn = Instance.new("TextButton", frame)
+balloonBtn.Size = UDim2.fromOffset(180, 28)
+balloonBtn.Position = UDim2.new(0.5, -90, 0, 124)
+balloonBtn.BackgroundColor3 = Color3.new(0, 0, 0)
+balloonBtn.BackgroundTransparency = 0.5
+balloonBtn.TextColor3 = Color3.fromRGB(150, 150, 150)
+balloonBtn.Text = "Reset on Balloon: OFF"
+balloonBtn.Font = Enum.Font.GothamMedium
+balloonBtn.TextSize = 12
+balloonBtn.BorderSizePixel = 0
+balloonBtn.AutoButtonColor = false
+Instance.new("UICorner", balloonBtn).CornerRadius = UDim.new(0, 5)
 
 -- // 7 (Minimize Button) //
 local minBtn = Instance.new("TextButton", frame)
@@ -132,6 +162,42 @@ end
 -- // 12 (Respawn Button Click) //
 respawnBtn.MouseButton1Click:Connect(tpAndDie)
 
+-- // 13 (Keybind Rebind) //
+keybindBtn.MouseButton1Click:Connect(function()
+	rebinding = true
+	keybindBtn.Text = "[...]"
+	keybindBtn.TextColor3 = Color3.fromRGB(255, 80, 80)
+end)
+
+-- // 14 (Balloon Toggle) //
+balloonBtn.MouseButton1Click:Connect(function()
+	balloonReset = not balloonReset
+	if balloonReset then
+		lastTrigger = tick()
+		balloonBtn.Text = "Reset on Balloon: ON"
+		balloonBtn.TextColor3 = Color3.new(1, 1, 1)
+	else
+		balloonBtn.Text = "Reset on Balloon: OFF"
+		balloonBtn.TextColor3 = Color3.fromRGB(150, 150, 150)
+	end
+end)
+
+-- // 15 (Input Handler â€” Keybind + Rebind) //
+UserInputService.InputBegan:Connect(function(input, gpe)
+	if gpe then return end
+	if input.UserInputType ~= Enum.UserInputType.Keyboard then return end
+	if rebinding then
+		keybind = input.KeyCode
+		keybindBtn.Text = "KeyBind: " .. keybind.Name
+		keybindBtn.TextColor3 = Color3.new(1, 1, 1)
+		rebinding = false
+		return
+	end
+	if input.KeyCode == keybind then
+		tpAndDie()
+	end
+end)
+
 -- // 16 (Minimize) //
 minBtn.MouseButton1Click:Connect(function()
 	minimized = not minimized
@@ -168,6 +234,22 @@ do
 			)
 		end
 	end)
+end
+
+-- // 18 (Balloon Text Detection) //
+local function hasBalloon(text)
+	if typeof(text) ~= "string" then return false end
+	local lower = string.lower(text)
+	return lower:find("balloon") ~= nil or lower:find("ballon") ~= nil
+end
+
+local function checkText(text)
+	if not balloonReset then return end
+	if not hasBalloon(text) then return end
+	local now = tick()
+	if now - lastTrigger < COOLDOWN then return end
+	lastTrigger = now
+	tpAndDie()
 end
 
 -- // 19 (PlayerGui Text Scanner) //
