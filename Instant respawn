@@ -32,7 +32,7 @@ local title = Instance.new("TextLabel", frame)
 title.Size = UDim2.new(1, -40, 0, 26)
 title.Position = UDim2.fromOffset(12, 5)
 title.BackgroundTransparency = 1
-title.Text = "ICE HUB"
+title.Text = "Cent Hub"
 title.Font = Enum.Font.GothamBold
 title.TextSize = 18
 title.TextColor3 = Color3.new(1, 1, 1)
@@ -40,7 +40,7 @@ title.TextXAlignment = Enum.TextXAlignment.Left
 
 -- // 4 (Insta Respawn Button) //
 local respawnBtn = Instance.new("TextButton", frame)
-respawnBtn.Size = UDim2.fromOffset(180, 40)
+respawnBtn.Size = UDim2.fromOffset(160, 40)
 respawnBtn.Position = UDim2.new(0.5, -90, 0, 40)
 respawnBtn.BackgroundColor3 = Color3.new(0, 0, 0)
 respawnBtn.BackgroundTransparency = 0.5
@@ -54,7 +54,7 @@ Instance.new("UICorner", respawnBtn).CornerRadius = UDim.new(0, 7)
 
 -- // 5 (Keybind Button) //
 local keybindBtn = Instance.new("TextButton", frame)
-keybindBtn.Size = UDim2.fromOffset(180, 28)
+keybindBtn.Size = UDim2.fromOffset(160, 28)
 keybindBtn.Position = UDim2.new(0.5, -90, 0, 88)
 keybindBtn.BackgroundColor3 = Color3.new(0, 0, 0)
 keybindBtn.BackgroundTransparency = 0.5
@@ -68,7 +68,7 @@ Instance.new("UICorner", keybindBtn).CornerRadius = UDim.new(0, 5)
 
 -- // 6 (Reset on Balloon Button) //
 local balloonBtn = Instance.new("TextButton", frame)
-balloonBtn.Size = UDim2.fromOffset(180, 28)
+balloonBtn.Size = UDim2.fromOffset(160, 28)
 balloonBtn.Position = UDim2.new(0.5, -90, 0, 124)
 balloonBtn.BackgroundColor3 = Color3.new(0, 0, 0)
 balloonBtn.BackgroundTransparency = 0.5
